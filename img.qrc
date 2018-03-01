@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Image/hj.jpeg</file>
+        <file>Image/sh.jpg</file>
+        <file>Image/search.png</file>
+        <file>Image/normal.png</file>
+        <file>Image/minimize.png</file>
+        <file>Image/max.png</file>
+        <file>Image/logo2.png</file>
+        <file>Image/logo.png</file>
+        <file>Image/without.png</file>
+        <file>Image/close.png</file>
+        <file>Image/chooseL.png</file>
+        <file>Image/dog.jpeg</file>
+        <file>Image/cdx.jpg</file>
+    </qresource>
+</RCC>
