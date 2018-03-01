@@ -56,7 +56,7 @@ void http::finishedSlot(QNetworkReply *reply) {
                     "rSSpeakUrl:" + rSSpeakUrl + "\n" +
                     "rRSpeakUrl:" + rRSpeakUrl + "\n" +
                     "rl:" + rl;
-        qDebug()<< tem;
+        //qDebug()<< tem;
     }
     if(this->isWord)
         emit contentReady0();

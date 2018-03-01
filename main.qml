@@ -284,7 +284,7 @@ Window {
                 anchors.topMargin: 20;
                 anchors.leftMargin: 20;
                 width: mainWinRight.width - 40;
-                height: mainWinRight.height - 40;
+                height: mainWinRight.height - 30;
                 orientation: Qt.Vertical;
                 Keys.enabled: true;
                 Keys.onPressed: {

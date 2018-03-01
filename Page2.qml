@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.2
 import MyHttp 1.0
+import CJudgeLanguageType 1.0
 Item {
     id:page2;
     onWidthChanged: {
@@ -285,6 +286,12 @@ Item {
         httpO.inithttp(i,originTextEdit.text,a,b);
         httpO.get();
     }
+    CJudgeLanguageType{
+        id:judgeTypeO;
+    }
+    function judgeType(){
+        judgeTypeO.judgeQString(originTextEdit.text);
+    }
 
     Rectangle{
         anchors.fill: parent;
@@ -498,12 +505,12 @@ Item {
                                 parent.border.width = 1;
                             }
                             onClicked: {
-                                doHttp(false,"EN","zh-CHS");
+                                //doHttp(false,"auto","zh-CHS");
+                                judgeType();
                             }
                         }
                     }
                 }
-
             }
             Rectangle{
                 z:0;
