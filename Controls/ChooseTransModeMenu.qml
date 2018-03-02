@@ -24,7 +24,7 @@ Rectangle{
             Rectangle{
                 anchors.fill: parent;
                 radius: 3;
-                color: "#300000FF";
+                color: "#300090FF";
             }
         }
         model: ListModel{
@@ -79,7 +79,7 @@ Rectangle{
                         onReleased: {rec.color = "#00000000";}
                         onEntered: {
                             //setDelTextColor("#500000FF");
-                            rec.color = "#200000FF";
+                            rec.color = "#200090FF";
                         }
                         onExited: {
                             //setDelTextColor("gray");

@@ -2,6 +2,8 @@ import QtQuick 2.0
 import QtQuick.Controls 2.2
 import MyHttp 1.0
 import CJudgeLanguageType 1.0
+import "Controls" as MyControls
+import QtQuick.Controls.Styles 1.2
 Item {
     id:page2;
     onWidthChanged: {
@@ -292,7 +294,52 @@ Item {
     function judgeType(){
         judgeTypeO.judgeQString(originTextEdit.text);
     }
-
+    property int oLan:0;
+    property int tLan:1;
+    function judgeLT(a){
+        if(a == 0){
+            return "auto";
+        }
+        if(a == 0){
+            return "EN";
+        }
+        if(a == 0){
+            return "zh-CHS";
+        }
+        if(a == 0){
+            return "ja";
+        }
+        if(a == 0){
+            return "ko";
+        }
+        if(a == 0){
+            return "ru";
+        }
+        if(a == 0){
+            return "fr";
+        }
+        if(a == 0){
+            return "pt";
+        }
+        if(a == 0){
+            return "es";
+        }
+    }
+    function setPoH(){
+        chooseTrans2.anchors.bottomMargin = -100;
+        chooseTrans1.anchors.bottomMargin = -100;
+    }
+    function setPoV(){
+        chooseTrans2.anchors.bottomMargin = -1;
+        chooseTrans1.anchors.bottomMargin = -1;
+    }
+    function judgeVHset(){
+        if(displayIsHorizon){
+            setPoH();
+        }
+        else
+            setPoV();
+    }
     Rectangle{
         anchors.fill: parent;
         //border.width: 3;
@@ -420,100 +467,8 @@ Item {
                     }*/
                }
             }
+
             Rectangle{
-                z:0;
-                id:buttonRange;
-                x:0;
-                y:(parent.height - 40) * 0.5;
-                width: parent.width;
-                height: 40;
-                //border.width: 1;
-                //border.color: "#10000000";
-                color: "#030099FF";
-                radius: 0;
-                /*
-                Rectangle{
-                    x:parent.width * 0.025;
-                    y:0;
-                    width: parent.width * 0.95;
-                    height: 1;
-                    color: "#55000000";
-                }
-                Rectangle{
-                    x:parent.width * 0.025;
-                    y:parent.height;
-                    width: parent.width * 0.95;
-                    height: 1;
-                    color: "#55000000";
-                }
-                */
-                Rectangle{
-                    id:searchAndChooseTransmode
-                    anchors.right: parent.right;
-                    anchors.rightMargin: 40;
-                    //anchors.top: parent.top;
-                    //anchors.topMargin: 7;
-                    y:parent.height * 0.5 - 15;
-                    width: 130;
-                    height: 30;
-                    border.width: 1;
-                    border.color: "#335577FF";
-                    Rectangle{
-                        id:le
-                        anchors.left: parent.left;
-                        anchors.top: parent.top;
-                        width: 100;
-                        height: parent.height;
-                        //border.width: 2;
-                        //border.color: "#550077FF";
-                        color: "#110077FF";
-                        MouseArea{
-                            anchors.fill: parent;
-                            cursorShape: Qt.PointingHandCursor;
-                        }
-                    }
-                    Rectangle{
-                        id:ri
-                        anchors.left: le.right;
-                        anchors.top: le.top;
-                        width: parent.width - le.width;
-                        height: parent.height;
-                        color: "#335577FF";
-                        border.width: 1;
-                        border.color: "#885599FF"
-                        Image {
-                            id: img
-                            source: "qrc:/Image/search.png"
-                            anchors.centerIn: parent;
-                        }
-                        MouseArea{
-                            anchors.fill: parent;
-                            cursorShape: Qt.PointingHandCursor;
-                            hoverEnabled: true;
-                            onEntered: {
-                                parent.color = "#335555FF";
-                            }
-                            onExited: {
-                                parent.color = "#335577FF";
-                            }
-                            onPressed: {
-                                parent.color = "#335533FF";
-                                parent.border.width = 2;
-                            }
-                            onReleased: {
-                                parent.color = "#335577FF";
-                                parent.border.width = 1;
-                            }
-                            onClicked: {
-                                //doHttp(false,"auto","zh-CHS");
-                                judgeType();
-                            }
-                        }
-                    }
-                }
-            }
-            Rectangle{
-                z:0;
                 id:transitionRange;
                 x:0;
                 y:(parent.height - 40) * 0.5 + 50;
@@ -536,6 +491,7 @@ Item {
                     height: 20;
                 }
                 Item{
+
                     id:transitionTextEditBack;
                     anchors.top: titletextT.bottom;
                     anchors.topMargin: 5;
@@ -566,6 +522,248 @@ Item {
                             }
                         }
                     }
+                }
+            }
+
+            Rectangle{
+                z:1;
+                id:buttonRange;
+                x:0;
+                y:(parent.height - 40) * 0.5;
+                width: parent.width;
+                height: 40;
+                //border.width: 1;
+                //border.color: "#10000000";
+                color: "#00000000";
+                radius: 0;
+                /*
+                Rectangle{
+                    x:parent.width * 0.025;
+                    y:0;
+                    width: parent.width * 0.95;
+                    height: 1;
+                    color: "#55000000";
+                }
+                Rectangle{
+                    x:parent.width * 0.025;
+                    y:parent.height;
+                    width: parent.width * 0.95;
+                    height: 1;
+                    color: "#55000000";
+                }
+                */
+                Rectangle{
+                    id:searchAndChooseTransmode
+                    anchors.right: parent.right;
+                    anchors.rightMargin: 40;
+                    //anchors.top: parent.top;
+                    //anchors.topMargin: 7;
+                    y:parent.height * 0.5 - 15;
+                    width: 260;
+                    height: 30;
+                    color: "transparent";
+                    border.width: 1;
+                    border.color: "#330077FF";
+                    Rectangle{
+                        id:le
+                        anchors.left: parent.left;
+                        anchors.top: parent.top;
+                        width: 100;
+                        height: parent.height;
+                        border.width: 0;
+                        border.color: "#550077FF";
+                        color: "#000077FF";
+
+                        Text {
+                           anchors.fill: parent;
+                            id: lText;
+                            text: qsTr("自动检测");
+                            horizontalAlignment: Text.AlignHCenter;
+                            verticalAlignment: Text.AlignVCenter;
+                            font.pixelSize: 13;
+                            color: "#FF000000";
+
+                            //color: "#300099FF"
+                        }
+                        MouseArea{
+                            anchors.fill: parent;
+                            cursorShape: Qt.PointingHandCursor;
+                            onClicked: {
+                                judgeVHset();
+                                if(!chooseTrans1.item.isShow){
+                                    chooseTrans1.item.show();
+                                    lText.color = "#FF0099FF";
+                                }
+                                else{
+                                    lText.color = "#FF000000";
+                                    chooseTrans1.item.hide();
+                                }
+                            }
+                        }
+                    }
+                    Rectangle{
+                        id:le2
+                        anchors.left: le.right;
+                        anchors.top: le.top;
+                        width: 30;
+                        height: parent.height;
+                        //border.width: 1;
+                        //border.color: "#550077FF";
+                        color: "#000077FF";
+                        Image {
+                            id: img;
+                            source: "qrc:/Image/toright.png";
+                            anchors.fill: parent;
+                            anchors.margins: 7;
+                            smooth: true;
+                        }
+                    }
+                    Rectangle{
+                        id:mi
+                        anchors.left: le2.right;
+                        anchors.top: le2.top;
+                        width: 100;
+                        height: parent.height;
+                        border.width: 0;
+                        border.color: "#550077FF";
+                        color: "#000077FF";
+                        Text {
+                           anchors.fill: parent;
+                            id: rText
+                            text: qsTr("英语");
+                            horizontalAlignment: Text.AlignHCenter;
+                            verticalAlignment: Text.AlignVCenter;
+                            font.pixelSize: 13;
+                        }
+                        MouseArea{
+                            anchors.fill: parent;
+                            cursorShape: Qt.PointingHandCursor;
+                            onClicked: {
+                                judgeVHset();
+                                if(!chooseTrans2.item.isShow){
+                                    chooseTrans2.item.show();
+                                    rText.color = "#FF0099FF";
+                                }
+                                else{
+                                    chooseTrans2.item.hide();
+                                    rText.color = "#FF000000";
+                                }
+                            }
+                        }
+                    }
+                    Rectangle{
+                        id:ri
+                        anchors.left: mi.right;
+                        anchors.top: mi.top;
+                        width: 30;
+                        height: parent.height;
+                        color: "#335577FF";
+                        border.width: 1;
+                        border.color: "#885599FF"
+                        Image {
+                            id: imgl
+                            source: "qrc:/Image/search.png"
+                            //anchors.centerIn: parent;
+                            anchors.fill: parent;
+                            anchors.margins: 7;
+                        }
+                        MouseArea{
+                            anchors.fill: parent;
+                            cursorShape: Qt.PointingHandCursor;
+                            hoverEnabled: true;
+                            onEntered: {
+                                parent.color = "#335555FF";
+                            }
+                            onExited: {
+                                parent.color = "#335577FF";
+                            }
+                            onPressed: {
+                                parent.color = "#335533FF";
+                                parent.border.width = 2;
+                            }
+                            onReleased: {
+                                parent.color = "#335577FF";
+                                parent.border.width = 1;
+                            }
+                            onClicked: {
+                                forceActiveFocus();
+                                doHttp(false,judgeLT(oLan),judgeLT(tLan));
+                                judgeType();
+                            }
+                        }
+
+                    }
+
+                    Loader{
+                        id:chooseTrans1;
+                        source: "Controls/ChooseTransModeMenuPage2.qml";
+                        onLoaded: {
+                            item.setCurrentIndex(0);
+                            item.isShow = false;
+                            if(item != null){
+                                console.log("TransM1 init.")
+                            }
+                        }
+                        width: le.width;
+                        anchors.bottom: le.top;
+                        anchors.bottomMargin: -1;
+                        anchors.left: le.left;
+                        focus: true;
+                        z:2;
+                    }
+                    Loader{
+                        id:chooseTrans2;
+                        source: "Controls/ChooseTransModeMenuPage2.qml";
+                        onLoaded: {
+                            item.setCurrentIndex(1);
+                            item.isShow = false;
+                            if(item != null){
+                                console.log("TransM2 init.")
+                            }
+                        }
+                        width: mi.width;
+                        anchors.bottom: mi.top;
+                        anchors.bottomMargin: -1;
+                        anchors.left: mi.left;
+                        focus: true;
+                        z:2;
+                    }
+
+
+
+                    Connections{
+                        target: chooseTrans1.item;
+                        ignoreUnknownSignals: true;
+                        onSendChoosed:{
+                            lText.text = a;
+                            oLan = b;
+                            console.log(oLan);
+                        }
+                    }
+                    Connections{
+                        target: chooseTrans1.item;
+                        ignoreUnknownSignals: true;
+                        onShide:{
+                            lText.color = "#FF000000";
+                        }
+                    }
+                    Connections{
+                        target: chooseTrans2.item;
+                        ignoreUnknownSignals: true;
+                        onSendChoosed:{
+                            rText.text = a;
+                            tLan = b;
+                            console.log(tLan);
+                        }
+                    }
+                    Connections{
+                        target: chooseTrans2.item;
+                        ignoreUnknownSignals: true;
+                        onShide:{
+                            rText.color = "#FF000000";
+                        }
+                    }
+
                 }
             }
             Rectangle{
@@ -613,6 +811,7 @@ Item {
                             parent.pressFlag = true;
 
                             changeDisplayWayToVerticalAnimation(true);
+                            originTextEdit.forceActiveFocus();
                         }
                         onEntered: {
                             parent.color = "#9955AAFF";
@@ -663,6 +862,7 @@ Item {
                             parent.pressFlag = true;
 
                             changeDisplayWayToVerticalAnimation(false);
+                            originTextEdit.forceActiveFocus();
                         }
                         onEntered: {
                             parent.color = "#9955AAFF";

@@ -21,7 +21,7 @@ void JudgeLanguageType::judgeQString(QString text){
         if(rx.exactMatch(text))
         {
             qDebug()<< text +"exist int";
-            //return int_;
+            return ;
         }
         rx.setPattern(sRegEn);
         if(rx.exactMatch(text))

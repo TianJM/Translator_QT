@@ -90,7 +90,7 @@ Window {
             anchors.fill: parent;
             fillMode: Image.PreserveAspectCrop;
             smooth: true;
-            source: "qrc:/Image/sh.jpg";
+            source: "qrc:/Image/yzk02.jpg";
             opacity: 0.9;
             focus:false;
             activeFocusOnTab: false;
@@ -109,7 +109,7 @@ Window {
 
             Image {
                 id: logoImg;
-                source: "qrc:/Image/cdx.jpg";
+                source: "qrc:/Image/hj2.gif";
                 anchors.top: parent.top;
                 anchors.left: parent.left;
                 anchors.leftMargin: 35;
@@ -124,6 +124,7 @@ Window {
                     //border.width: 2;
                     color: "#00000000";
                 }
+
             }
             Text {
                 id: logoText;
@@ -229,13 +230,13 @@ Window {
                     currentIndex: 0;
                     anchors.fill: parent;
                     highlight: Rectangle{
-                        color: "#100000FF";
+                        color: "#100099FF";
                         Rectangle{
                             anchors.left: parent.left;
                             anchors.top: parent.top;
                             height: parent.height;
                             width: 3.5;
-                            color: "#FF6666FF";
+                            color: "#FF0099FF";
                         }
                     }
                     Keys.enabled: true;

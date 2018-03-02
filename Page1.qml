@@ -124,7 +124,8 @@ Item {
         httpO.inithttp(i,textInput.text,a,b);
         httpO.get();
     }
-
+    property int oLan:0;
+    property int tLan:1;
     Rectangle{
         id:page1Back;
         anchors.fill: parent;
@@ -267,17 +268,40 @@ Item {
                 }
             }
 
-            Button{
+            Rectangle{
                 id:chooseLanguageB;
-                width: 110;
+                width: 70;
                 height: 30;
                 anchors.left: textBack.left;
                 anchors.top: textBack.top;
-                iconSource: "qrc:/Image/chooseL.png";
-                text: "汉英互译";
-                style: choosebtnstyle;
+                radius: 15;
                 focus: false;
                 activeFocusOnTab: false;
+                Item{
+                    id:gloimgI
+                    height: 30;
+                    width: 30;
+                    anchors.left: parent.left;
+                    anchors.top: parent.top;
+                    Image {
+                        id: gloimg
+                        anchors.fill: parent;
+                        anchors.margins: 6;
+                        source: "qrc:/Image/toright.png"
+                    }
+                }
+
+                Text {
+                    anchors.left: gloimgI.right;
+                    anchors.top: parent.top;
+                    //anchors.leftMargin: 2;
+                    height: parent.height;
+                    anchors.right: parent.right;
+                    id: chooseLText;
+                    text: qsTr("英文");
+                    verticalAlignment: Text.AlignVCenter;
+                    //horizontalAlignment: Text.AlignHCenter;
+                }
                 MouseArea{
                     anchors.fill: parent;
                     cursorShape: Qt.PointingHandCursor;
@@ -294,43 +318,29 @@ Item {
                     }
                 }
             }
-            Button{
+            Rectangle{
                 id:searchB;
-                width: 40;
+                width: 30;
                 height: 30;
                 anchors.right: textBack.right;
                 anchors.top: textBack.top;
-                iconSource: "qrc:/Image/search.png";
-                style: searchbtnstyle;
-                focus: false;
+                radius: 15;
+                focus: true;
                 activeFocusOnTab: false;
+                Image {
+                    id: seaimg
+                    anchors.fill: parent;
+                    anchors.margins: 7;
+                    source: "qrc:/Image/search.png"
+                }
                 MouseArea{
                     anchors.fill: parent;
                     cursorShape: Qt.PointingHandCursor;
                     onClicked: {
                         console.log("search button clicked.")
-                    }
-                }
-
-
-            }
-            Component{
-                id:searchbtnstyle;
-                ButtonStyle{
-                    background: Rectangle{
-                        id:rec1;
-                        radius: 20;
-                        color: "transparent";
-                    }
-                }
-            }
-            Component{
-                id:choosebtnstyle;
-                ButtonStyle{
-                    background: Rectangle{
-                        id:rec1;
-                        radius: 20;
-                        color: "transparent";
+                        forceActiveFocus();
+                        textInput.selectAll();
+                        doHttp(true,"EN","zh-CHS");
                     }
                 }
             }
@@ -422,6 +432,7 @@ Item {
                 if(item != null){
                     console.log("menu init.")
                 }
+                item.width = chooseLanguageB.width;
             }
             focus: false;
             activeFocusOnTab: false;
