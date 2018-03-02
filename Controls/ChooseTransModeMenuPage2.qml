@@ -7,7 +7,7 @@ Rectangle {
     height: 0;
     border.width: 1;
     border.color: "#335577FF";
-    color: "#EEFFFFFF";
+    color: "#99FFFFFF";
     signal sendChoosed(var a,var b);
     signal shide();
     property bool isShow: false;
@@ -19,7 +19,7 @@ Rectangle {
         target: body;
         property: "height";
         to:270;
-        duration: 100;
+        duration: 50;
     }
 
     PropertyAnimation{
@@ -27,7 +27,7 @@ Rectangle {
         target: body;
         property: "height";
         to:0;
-        duration: 100;
+        duration: 50;
     }
     function show(){
         menuShow.running = true;

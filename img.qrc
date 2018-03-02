@@ -22,5 +22,8 @@
         <file>Image/yzk02.jpg</file>
         <file>Image/yzk03.jpg</file>
         <file>Image/toright.png</file>
+        <file>Image/lr.jpg</file>
+        <file>Image/lr2.jpg</file>
+        <file>Image/lr3.png</file>
     </qresource>
 </RCC>

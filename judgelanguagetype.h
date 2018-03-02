@@ -27,6 +27,12 @@ public:
     };
     explicit JudgeLanguageType(QObject *parent = nullptr);
     Q_INVOKABLE void judgeQString(QString text);
+    Q_INVOKABLE int judgeQstringZhCount(QString text);
+    Q_INVOKABLE int judgeQstringEnCount(QString text);
+    Q_INVOKABLE int judgeQstringJaCount(QString text);
+    Q_INVOKABLE int judgeQstringKoCount(QString text);
+    Q_INVOKABLE int judgeQstringNuCount(QString text);
+    Q_INVOKABLE int judgeQstringRuCount(QString text);
 signals:
 
 public slots:

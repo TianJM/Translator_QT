@@ -9,7 +9,7 @@ Rectangle{
     color: "#AAFFFFFF";
     //border.width: 1;
     //border.color: "#300000FF";
-    signal sendChoosed(var a);
+    signal sendChoosed(var a,var b);
     radius: 3;
     ListView{
         id:listView;
@@ -28,10 +28,11 @@ Rectangle{
             }
         }
         model: ListModel{
-            ListElement{titlename: "汉英互译";col: "#00000000";}
-            ListElement{titlename: "日英互译";col: "#00000000";}
-            ListElement{titlename: "汉日互译";col: "#00000000";}
-            ListElement{titlename: "汉韩互译";col: "#00000000";}
+            ListElement{titlenameL: "自动";titlenameR: "自动";col: "#00000000";}
+            ListElement{titlenameL: "中文";titlenameR: "英文";col: "#00000000";}
+            ListElement{titlenameL: "中文";titlenameR: "日文";col: "#00000000";}
+            ListElement{titlenameL: "中文";titlenameR: "韩文";col: "#00000000";}
+            ListElement{titlenameL: "中文";titlenameR: "俄文";col: "#00000000";}
         }
         delegate: listcomponent;
         onCurrentIndexChanged: {
@@ -56,13 +57,42 @@ Rectangle{
                     //color: "#90FFFFFF";
                     function setDelTextColor(a){deltext.color = a;}
                     Text {
-                        anchors.fill: parent;
-                        horizontalAlignment: Text.AlignHCenter;
+                        anchors.left: parent.left;
+                        anchors.top: parent.top;
+                        //anchors.leftMargin: 2;
+                        height: parent.height;
+                        width: (parent.width - 30)/2;
+                        id: deltextL;
+                        text: titlenameL;
+                        font.pixelSize: 14;
                         verticalAlignment: Text.AlignVCenter;
-                        id: deltext;
-                        text: titlename;
-                        color: "black";
-                        font.pixelSize: 13;
+                        horizontalAlignment: Text.AlignRight;
+                    }
+                    Item{
+                        id:gloimgI
+                        height: 30;
+                        width: 30;
+                        anchors.left: deltextL.right;
+                        anchors.top: parent.top;
+                        Image {
+                            id: gloimg
+                            anchors.fill: parent;
+                            anchors.margins: 7;
+                            source: "qrc:/Image/lr3.png"
+                        }
+                    }
+
+                    Text {
+                        anchors.left: gloimgI.right;
+                        anchors.top: parent.top;
+                        //anchors.leftMargin: 2;
+                        height: parent.height;
+                        width: (parent.width - 30)/2;
+                        id: deltextR;
+                        text: titlenameR;
+                        font.pixelSize: 14;
+                        verticalAlignment: Text.AlignVCenter;
+                        horizontalAlignment: Text.AlignLeft;
                     }
                     color: "#00000000";
                     MouseArea{
@@ -72,8 +102,9 @@ Rectangle{
                         onClicked: {
                             listView.currentIndex = index;
                             hide();
+                            toM();
                             //selected();
-                            sendChoosed(deltext.text);
+                            sendChoosed(deltextL.text,deltextR.text);
                         }
                         onPressed: {/*rec.color = "#100000FF";*/}
                         onReleased: {rec.color = "#00000000";}
@@ -93,7 +124,7 @@ Rectangle{
         id:menuShow;
         target: listViewRec;
         property: "height";
-        to:120;
+        to:150;
         duration: 300;
     }
     PropertyAnimation{
@@ -116,6 +147,7 @@ Rectangle{
     onActiveFocusChanged: {
         if(!listViewRec.activeFocus){
             hide();
+            toM();
             console.log("choose transMode no focus.")
         }
         else{

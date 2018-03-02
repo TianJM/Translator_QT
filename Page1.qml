@@ -6,6 +6,7 @@ import QtQuick 2.1
 import QtQuick 2.7
 import "Controls" as MyControls
 import MyHttp 1.0
+import CJudgeLanguageType 1.0
 
 Item {
     id:page1;
@@ -121,11 +122,114 @@ Item {
         }
     }
     function doHttp(i,a,b){
-        httpO.inithttp(i,textInput.text,a,b);
-        httpO.get();
+        if(textInput.length > 0 ){
+            httpO.inithttp(i,textInput.text,a,b);
+            httpO.get();
+        }
+    }
+    CJudgeLanguageType{
+        id:judgeTypeO;
+    }
+    //property list coms: [];
+    function judgeType(){
+        //judgeTypeO.judgeQString(originTextEdit.text);
+        var cnC = judgeTypeO.judgeQstringZhCount(textInput.text);
+        //console.log("CN:"+cnC);
+        var enC = judgeTypeO.judgeQstringEnCount(textInput.text);
+        //console.log("EN:"+enC);
+        var jaC = judgeTypeO.judgeQstringJaCount(textInput.text);
+        //console.log("JA:"+jaC);
+        var koC = judgeTypeO.judgeQstringKoCount(textInput.text);
+        //console.log("KO:"+koC);
+        //var nuC = judgeTypeO.judgeQstringNuCount(textInput.text);
+        //console.log("NU:"+nuC);
+        var ruC = judgeTypeO.judgeQstringRuCount(textInput.text);
+        //console.log("RU:"+ruC);
+        var arrN = new Array("zh-CHS","EN","ja","ko","ru");
+        var arrC = new Array(cnC,enC,jaC,koC,ruC);
+        for(var i = 0; i < arrC.length - 1;i++){
+            var tem = max(arrC[0],arrC[i+1]);
+            if(tem == arrC[i+1]){
+                //var tem2 = arrC[i];
+                arrC[0] = arrC[i+1];
+                arrN[0] = arrN[i+1];
+            }
+        }
+        if(arrC[0] != 0){
+            judgedInputLanType = arrN[0];
+            console.log(judgedInputLanType);
+        }
+        else
+            judgedInputLanType = "";
+
+    }
+    function max(a,b){
+        if(a >= b){
+            return a;
+        }
+        return b;
     }
     property int oLan:0;
-    property int tLan:1;
+    property int tLan:0;
+    property string judgedInputLanType: "";
+    function judgeLT(a){
+        if(a == 0){
+            return "auto";
+        }
+        if(a == 1){
+            return "EN";
+        }
+        if(a == 2){
+            return "zh-CHS";
+        }
+        if(a == 3){
+            return "ja";
+        }
+        if(a == 4){
+            return "ko";
+        }
+        if(a == 5){
+            return "ru";
+        }
+        if(a == 6){
+            return "fr";
+        }
+        if(a == 7){
+            return "pt";
+        }
+        if(a == 8){
+            return "es";
+        }
+    }
+    function setShowLanTypeText(){
+        if(judgedInputLanType == "zh-CHS"){
+            showLanType.text = "中文";
+        }
+        if(judgedInputLanType == "EN"){
+            showLanType.text = "英文";
+        }
+        if(judgedInputLanType == "ja"){
+            showLanType.text = "日文";
+        }
+        if(judgedInputLanType == "ko"){
+            showLanType.text = "韩文";
+        }
+        if(judgedInputLanType == "ru"){
+            showLanType.text = "俄文";
+        }
+        if(judgedInputLanType == ""){
+            showLanType.text = "";
+            showLanTypeRec.anchors.margins = 0;
+        }
+        else
+            showLanTypeRec.anchors.margins = -5;
+    }
+    function toL(){
+        changeLanbuToL.running = true;
+    }
+    function toM(){
+        changeLanbuToM.running = true;
+    }
     Rectangle{
         id:page1Back;
         anchors.fill: parent;
@@ -133,6 +237,8 @@ Item {
         focus: false;
         activeFocusOnTab: false;
         Rectangle{
+            border.width: 1;
+            border.color: "#400099FF";
             id:textBack
             property bool isMini: true;
             clip: true;
@@ -142,12 +248,40 @@ Item {
             color: "#EEFFFFFF";
             focus: false;
             activeFocusOnTab: false;
+            Item{
+                //anchors.left: textInputMouseA.right;
+                anchors.top:textBack.top;
+                anchors.right: searchB.left;
+                anchors.rightMargin: 4;
+                id: showLanTypeI
+                height: textBack.height;
+                width: 37;
+                Text {
+                    //anchors.right: showLanTypeI.right;
+                    //anchors.bottom: showLanTypeI.bottom;
+                    anchors.centerIn: showLanTypeI;
+                    height: 10;
+                    id: showLanType
+                    text: qsTr("");
+                    font.pixelSize: 14;
+                    verticalAlignment: Text.AlignVCenter;
+                    Rectangle{
+                        id: showLanTypeRec
+                        anchors.fill:parent;
+                        color: "#330099FF";
+                        radius: 100;
+                        anchors.margins: 0;
+                    }
+                }
+            }
             MouseArea{
                 id:textInputMouseA;
-                width: textBack.width - 150;
+                width: textBack.width - chooseLanguageB.width - searchB.width - 12 - showLanTypeI.width;
                 height: 30;
                 clip: true;
-                anchors.left: chooseLanguageB.right;
+                //anchors.left: chooseLanguageB.right;
+                anchors.right: showLanTypeI.left;
+                //anchors.leftMargin: 0;
                 anchors.top: textBack.top;
                 cursorShape: Qt.IBeamCursor;
                 focus: false;
@@ -161,7 +295,7 @@ Item {
                     anchors.fill: parent;
                     font.pointSize: 10;
                     verticalAlignment: TextInput.AlignVCenter;
-                    maximumLength: 50;
+                    maximumLength: 70;
                     Rectangle{
                         id:ss01;
                         visible: false;
@@ -222,7 +356,8 @@ Item {
                             //page1Back.showWR();
                         waitChooseList.item.getStringLength(0);
                         textInput.selectAll();
-                        doHttp(true,"EN","zh-CHS");
+                        if(textInput.length != 0)
+                            doHttp(true,"EN","zh-CHS");
 
                     }
                     onActiveFocusChanged: {
@@ -249,6 +384,8 @@ Item {
                     }
                     focus: true;
                     onTextChanged: {
+                        judgeType();
+                        setShowLanTypeText();
                         waitChooseList.item.getString(textInput.text);
                         waitChooseList.item.getStringLength(0);
                         if(textInput.length == 0){
@@ -270,39 +407,105 @@ Item {
 
             Rectangle{
                 id:chooseLanguageB;
-                width: 70;
+                width: 30;
                 height: 30;
                 anchors.left: textBack.left;
                 anchors.top: textBack.top;
                 radius: 15;
                 focus: false;
                 activeFocusOnTab: false;
+                color: "#300099FF";
+
+                PropertyAnimation{
+                    id:changeLanbuToL;
+                    target: chooseLanguageB;
+                    property: "width";
+                    to:110;
+                    duration: 300;
+                    onStarted: {
+                        gloimgIM.visible = false;
+                    }
+
+                    onStopped: {
+
+                        chooseLTextL.visible = true;
+                        chooseLTextR.visible = true;
+                        gloimgI.visible = true;
+                    }
+                }
+                PropertyAnimation{
+                    id:changeLanbuToM;
+                    target: chooseLanguageB;
+                    property: "width";
+                    to:30;
+                    duration: 300;
+                    onStarted: {
+                        chooseLTextL.visible = false;
+                        chooseLTextR.visible = false;
+                        gloimgI.visible = false;
+                    }
+
+                    onStopped: {
+                        gloimgIM.visible = true;
+
+                    }
+                }
+
                 Item{
-                    id:gloimgI
-                    height: 30;
-                    width: 30;
-                    anchors.left: parent.left;
-                    anchors.top: parent.top;
+                    id:gloimgIM
+                    anchors.fill: parent;
+                    visible: true;
                     Image {
-                        id: gloimg
+                        id: gloimgM
                         anchors.fill: parent;
                         anchors.margins: 6;
-                        source: "qrc:/Image/toright.png"
+                        source: "qrc:/Image/chooseL.png"
                     }
                 }
 
                 Text {
+                    visible: false;
+                    anchors.left: parent.left;
+                    anchors.top: parent.top;
+                    //anchors.leftMargin: 2;
+                    height: parent.height;
+                    width: 40;
+                    id: chooseLTextL;
+                    text: qsTr("自动");
+                    font.pixelSize: 15;
+                    verticalAlignment: Text.AlignVCenter;
+                    horizontalAlignment: Text.AlignRight;
+                }
+                Item{
+                    visible: false;
+                    id:gloimgI
+                    height: 30;
+                    width: 30;
+                    anchors.left: chooseLTextL.right;
+                    anchors.top: parent.top;
+                    Image {
+                        id: gloimg
+                        anchors.fill: parent;
+                        anchors.margins: 7;
+                        source: "qrc:/Image/lr3.png"
+                    }
+                }
+
+                Text {
+                    visible: false;
                     anchors.left: gloimgI.right;
                     anchors.top: parent.top;
                     //anchors.leftMargin: 2;
                     height: parent.height;
-                    anchors.right: parent.right;
-                    id: chooseLText;
-                    text: qsTr("英文");
+                    width: 40;
+                    id: chooseLTextR;
+                    text: qsTr("自动");
+                    font.pixelSize: 15;
                     verticalAlignment: Text.AlignVCenter;
-                    //horizontalAlignment: Text.AlignHCenter;
+                    horizontalAlignment: Text.AlignLeft;
                 }
                 MouseArea{
+
                     anchors.fill: parent;
                     cursorShape: Qt.PointingHandCursor;
                     onClicked: {
@@ -310,10 +513,12 @@ Item {
                         if(!chooseMenu.item.isShow){
                             chooseMenu.item.show();
                             //changeradius();
+                            toL();
                         }
                         else{
                             chooseMenu.item.hide();
                             //changeradius();
+                            toM();
                         }
                     }
                 }
@@ -327,6 +532,7 @@ Item {
                 radius: 15;
                 focus: true;
                 activeFocusOnTab: false;
+                color: "transparent";
                 Image {
                     id: seaimg
                     anchors.fill: parent;
@@ -338,9 +544,10 @@ Item {
                     cursorShape: Qt.PointingHandCursor;
                     onClicked: {
                         console.log("search button clicked.")
-                        forceActiveFocus();
+                        textInput.forceActiveFocus();
                         textInput.selectAll();
-                        doHttp(true,"EN","zh-CHS");
+                        if(textInput.length != 0)
+                            doHttp(true,"EN","zh-CHS");
                     }
                 }
             }
@@ -359,6 +566,9 @@ Item {
             radius: 5;
             focus: false;
             activeFocusOnTab: false;
+            border.width: 1;
+            border.color: "#100099FF";
+
         }
         PropertyAnimation{
             id:showWordExplainRecH;
@@ -417,7 +627,8 @@ Item {
             target: chooseMenu.item;
             ignoreUnknownSignals: true;
             onSendChoosed:{
-                chooseLanguageB.text = a;
+                chooseLTextL.text = a;
+                chooseLTextR.text = b;
                 //console.log(chooseLanguageB.text);
             }
         }
@@ -432,7 +643,7 @@ Item {
                 if(item != null){
                     console.log("menu init.")
                 }
-                item.width = chooseLanguageB.width;
+                item.width = 110;//chooseLanguageB.width;
             }
             focus: false;
             activeFocusOnTab: false;

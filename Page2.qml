@@ -285,53 +285,92 @@ Item {
         }
     }
     function doHttp(i,a,b){
-        httpO.inithttp(i,originTextEdit.text,a,b);
-        httpO.get();
+        if(originTextEdit.length > 0 ){
+            httpO.inithttp(i,originTextEdit.text,a,b);
+            httpO.get();
+        }
     }
     CJudgeLanguageType{
         id:judgeTypeO;
     }
+    //property list coms: [];
     function judgeType(){
-        judgeTypeO.judgeQString(originTextEdit.text);
+        //judgeTypeO.judgeQString(originTextEdit.text);
+        var cnC = judgeTypeO.judgeQstringZhCount(originTextEdit.text);
+        //console.log("CN:"+cnC);
+        var enC = judgeTypeO.judgeQstringEnCount(originTextEdit.text);
+        //console.log("EN:"+enC);
+        var jaC = judgeTypeO.judgeQstringJaCount(originTextEdit.text);
+        //console.log("JA:"+jaC);
+        var koC = judgeTypeO.judgeQstringKoCount(originTextEdit.text);
+        //console.log("KO:"+koC);
+        //var nuC = judgeTypeO.judgeQstringNuCount(originTextEdit.text);
+        //console.log("NU:"+nuC);
+        var ruC = judgeTypeO.judgeQstringRuCount(originTextEdit.text);
+        //console.log("RU:"+ruC);
+        var arrN = new Array("zh-CHS","EN","ja","ko","ru");
+        var arrC = new Array(cnC,enC,jaC,koC,ruC);
+        for(var i = 0; i < arrC.length - 1;i++){
+            var tem = max(arrC[0],arrC[i+1]);
+            if(tem == arrC[i+1]){
+                //var tem2 = arrC[i];
+                arrC[0] = arrC[i+1];
+                arrN[0] = arrN[i+1];
+            }
+        }
+        if(arrC[0] != 0){
+            judgedInputLanType = arrN[0];
+            console.log(judgedInputLanType);
+        }
+        else
+            judgedInputLanType = "";
+
+    }
+    function max(a,b){
+        if(a >= b){
+            return a;
+        }
+        return b;
     }
     property int oLan:0;
-    property int tLan:1;
+    property int tLan:0;
+    property string judgedInputLanType: "";
     function judgeLT(a){
         if(a == 0){
             return "auto";
         }
-        if(a == 0){
+        if(a == 1){
             return "EN";
         }
-        if(a == 0){
+        if(a == 2){
             return "zh-CHS";
         }
-        if(a == 0){
+        if(a == 3){
             return "ja";
         }
-        if(a == 0){
+        if(a == 4){
             return "ko";
         }
-        if(a == 0){
+        if(a == 5){
             return "ru";
         }
-        if(a == 0){
+        if(a == 6){
             return "fr";
         }
-        if(a == 0){
+        if(a == 7){
             return "pt";
         }
-        if(a == 0){
+        if(a == 8){
             return "es";
         }
     }
     function setPoH(){
-        chooseTrans2.anchors.bottomMargin = -100;
-        chooseTrans1.anchors.bottomMargin = -100;
+        chooseTrans2.anchors.bottomMargin = -120;
+        chooseTrans1.anchors.bottomMargin = -120;
     }
     function setPoV(){
-        chooseTrans2.anchors.bottomMargin = -1;
-        chooseTrans1.anchors.bottomMargin = -1;
+        chooseTrans2.anchors.bottomMargin = -30;
+        chooseTrans1.anchors.bottomMargin = -30;
     }
     function judgeVHset(){
         if(displayIsHorizon){
@@ -339,6 +378,30 @@ Item {
         }
         else
             setPoV();
+    }
+
+    function setShowLanTypeText(){
+        if(judgedInputLanType == "zh-CHS"){
+            showLanType.text = "检测到语言主体为中文";
+        }
+        if(judgedInputLanType == "EN"){
+            showLanType.text = "检测到语言主体为英文";
+        }
+        if(judgedInputLanType == "ja"){
+            showLanType.text = "检测到语言主体为日文";
+        }
+        if(judgedInputLanType == "ko"){
+            showLanType.text = "检测到语言主体为韩文";
+        }
+        if(judgedInputLanType == "ru"){
+            showLanType.text = "检测到语言主体为俄文";
+        }
+        if(judgedInputLanType == ""){
+            showLanType.text = "";
+            showLanTypeRec.anchors.margins = 0;
+        }
+        else
+            showLanTypeRec.anchors.margins = -7;
     }
     Rectangle{
         anchors.fill: parent;
@@ -383,6 +446,33 @@ Item {
                     anchors.topMargin: 8;
                     height: 20;
                 }
+                Item{
+                    anchors.left: titletextO.right;
+                    anchors.top:titletextO.top;
+                    anchors.leftMargin: 20;
+                    anchors.topMargin: 6;
+                    height: 10;
+                    Text {
+                        anchors.left: parent.left;
+                        anchors.top: parent.top;
+                        height: 10;
+                        id: showLanType
+                        text: qsTr("");
+                        font.pixelSize: 12;
+                        verticalAlignment: Text.AlignVCenter;
+                        Rectangle{
+                            id: showLanTypeRec
+                            anchors.fill:parent;
+                            color: "#100099FF";
+                            radius: 20;
+                            anchors.margins: 0;
+                        }
+                    }
+                }
+
+
+
+
                 Rectangle{
                     //anchors.right: parent.right;
                     //anchors.top: parent.top;
@@ -419,6 +509,10 @@ Item {
                                 if(a>b)
                                     return a;
                                 else return b;
+                            }
+                            onTextChanged: {
+                                judgeType();
+                                setShowLanTypeText();
                             }
                         }
                     }
@@ -593,10 +687,12 @@ Item {
                                 if(!chooseTrans1.item.isShow){
                                     chooseTrans1.item.show();
                                     lText.color = "#FF0099FF";
+                                    lText.visible = false;
                                 }
                                 else{
                                     lText.color = "#FF000000";
                                     chooseTrans1.item.hide();
+                                    lText.visible = true;
                                 }
                             }
                         }
@@ -630,7 +726,7 @@ Item {
                         Text {
                            anchors.fill: parent;
                             id: rText
-                            text: qsTr("英语");
+                            text: qsTr("自动检测");
                             horizontalAlignment: Text.AlignHCenter;
                             verticalAlignment: Text.AlignVCenter;
                             font.pixelSize: 13;
@@ -643,10 +739,12 @@ Item {
                                 if(!chooseTrans2.item.isShow){
                                     chooseTrans2.item.show();
                                     rText.color = "#FF0099FF";
+                                    rText.visible = false;
                                 }
                                 else{
                                     chooseTrans2.item.hide();
                                     rText.color = "#FF000000";
+                                    rText.visible = true;
                                 }
                             }
                         }
@@ -688,7 +786,7 @@ Item {
                             onClicked: {
                                 forceActiveFocus();
                                 doHttp(false,judgeLT(oLan),judgeLT(tLan));
-                                judgeType();
+                                //judgeType(transitionTextEdit.text);
                             }
                         }
 
@@ -715,7 +813,7 @@ Item {
                         id:chooseTrans2;
                         source: "Controls/ChooseTransModeMenuPage2.qml";
                         onLoaded: {
-                            item.setCurrentIndex(1);
+                            item.setCurrentIndex(0);
                             item.isShow = false;
                             if(item != null){
                                 console.log("TransM2 init.")
@@ -745,6 +843,7 @@ Item {
                         ignoreUnknownSignals: true;
                         onShide:{
                             lText.color = "#FF000000";
+                            lText.visible = true;
                         }
                     }
                     Connections{
@@ -761,6 +860,7 @@ Item {
                         ignoreUnknownSignals: true;
                         onShide:{
                             rText.color = "#FF000000";
+                            rText.visible = true;
                         }
                     }
 
