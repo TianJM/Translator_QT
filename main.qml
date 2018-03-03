@@ -90,7 +90,7 @@ Window {
             anchors.fill: parent;
             fillMode: Image.PreserveAspectCrop;
             smooth: true;
-            source: "qrc:/Image/yzk02.jpg";
+            source: "qrc:/Image/yzk01.jpg";
             opacity: 0.9;
             focus:false;
             activeFocusOnTab: false;

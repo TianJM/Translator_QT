@@ -10,5 +10,6 @@
         <file>Controls/ChooseTransModeMenu.qml</file>
         <file>Controls/WaitForChooseList.qml</file>
         <file>Controls/ChooseTransModeMenuPage2.qml</file>
+        <file>qtquickcontrols2.conf</file>
     </qresource>
 </RCC>

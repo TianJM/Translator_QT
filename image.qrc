@@ -1,0 +1,33 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Image/lr3.png</file>
+        <file>Image/lr2.jpg</file>
+        <file>Image/max.png</file>
+        <file>Image/minimize.png</file>
+        <file>Image/normal.png</file>
+        <file>Image/search.png</file>
+        <file>Image/lr.jpg</file>
+        <file>Image/logo2.png</file>
+        <file>Image/logo.png</file>
+        <file>Image/hj2.gif</file>
+        <file>Image/hj.jpeg</file>
+        <file>Image/dog.jpeg</file>
+        <file>Image/close.png</file>
+        <file>Image/chooseL.png</file>
+        <file>Image/cdx.jpg</file>
+        <file>Image/zj.jpeg</file>
+        <file>Image/yzk02.jpg</file>
+        <file>Image/yzk01.jpg</file>
+        <file>Image/without.png</file>
+        <file>Image/tx.jpeg</file>
+        <file>Image/toright.png</file>
+        <file>Image/shlm.jpg</file>
+        <file>Image/sh01.png</file>
+        <file>Image/sh04.png</file>
+        <file>Image/sh06.png</file>
+        <file>Image/sh07.png</file>
+        <file>Image/sh05.png</file>
+        <file>Image/sh08.png</file>
+        <file>Image/sh09.png</file>
+    </qresource>
+</RCC>

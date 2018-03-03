@@ -335,6 +335,39 @@ Item {
     property int oLan:0;
     property int tLan:0;
     property string judgedInputLanType: "";
+    property int oLanFact:0;
+    property int tLanFact:0;
+    function judgeTransTypeAuto(){
+        if(oLan == 0 && tLan == 0){
+            if(judgedInputLanType == "zh-CHS"){
+                oLanFact = 0;
+                tLanFact = 1;
+            }
+            else{
+                oLanFact = 0;
+                tLanFact = 2;
+            }
+        }
+        else if(oLan == 0 && tLan != 0 ){
+            oLanFact = 0;
+            tLanFact = tLan;
+        }
+        else if(oLan != 0 && tLan == 0 ){
+            if(judgedInputLanType == "zh-CHS"){
+                oLanFact = oLan;
+                tLanFact = 1;
+            }
+            else{
+                oLanFact = oLan;
+                tLanFact = 2;
+            }
+        }
+        else{
+            oLanFact = oLan;
+            tLanFact = tLan;
+        }
+    }
+
     function judgeLT(a){
         if(a == 0){
             return "auto";
@@ -683,7 +716,7 @@ Item {
                             anchors.fill: parent;
                             cursorShape: Qt.PointingHandCursor;
                             onClicked: {
-                                judgeVHset();
+                                //judgeVHset();
                                 if(!chooseTrans1.item.isShow){
                                     chooseTrans1.item.show();
                                     lText.color = "#FF0099FF";
@@ -735,7 +768,7 @@ Item {
                             anchors.fill: parent;
                             cursorShape: Qt.PointingHandCursor;
                             onClicked: {
-                                judgeVHset();
+                                //judgeVHset();
                                 if(!chooseTrans2.item.isShow){
                                     chooseTrans2.item.show();
                                     rText.color = "#FF0099FF";
@@ -785,7 +818,8 @@ Item {
                             }
                             onClicked: {
                                 forceActiveFocus();
-                                doHttp(false,judgeLT(oLan),judgeLT(tLan));
+                                judgeTransTypeAuto();
+                                doHttp(false,judgeLT(oLanFact),judgeLT(tLanFact));
                                 //judgeType(transitionTextEdit.text);
                             }
                         }
@@ -804,7 +838,7 @@ Item {
                         }
                         width: le.width;
                         anchors.bottom: le.top;
-                        anchors.bottomMargin: -1;
+                        anchors.bottomMargin: -31;
                         anchors.left: le.left;
                         focus: true;
                         z:2;
@@ -821,7 +855,7 @@ Item {
                         }
                         width: mi.width;
                         anchors.bottom: mi.top;
-                        anchors.bottomMargin: -1;
+                        anchors.bottomMargin: -31;
                         anchors.left: mi.left;
                         focus: true;
                         z:2;

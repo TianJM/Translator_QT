@@ -18,7 +18,7 @@ Rectangle {
         id:menuShow;
         target: body;
         property: "height";
-        to:270;
+        to:120;
         duration: 50;
     }
 
@@ -56,46 +56,53 @@ Rectangle {
         //ScrollBar.horizontal.interactive: true
         //ScrollBar.vertical.interactive: true
         //wheelEnabled: true;
-        ListView{
-            id:listView;
-            interactive: false;
+
+        ScrollView{
             anchors.fill: parent;
-            //currentIndex: 0;
-            clip: true;
-            focus: false;
-            highlight: Rectangle{
-                color: "#00000000";
-                Rectangle{
-                    anchors.fill: parent;
-                    radius: 3;
-                    color: "#300099FF";
+            ListView{
+                id:listView;
+                interactive: true;
+                //anchors.fill: parent;
+
+                //currentIndex: 0;
+                clip: true;
+                focus: false;
+                highlight: Rectangle{
+                    color: "#00000000";
+                    Rectangle{
+                        anchors.fill: parent;
+                        radius: 3;
+                        color: "#300099FF";
+                    }
                 }
-            }
-            model: ListModel{
-                ListElement{titlename: "自动检测";col: "#00000000";}
-                ListElement{titlename: "英文";col: "#00000000";}
-                ListElement{titlename: "中文";col: "#00000000";}
-                ListElement{titlename: "日文";col: "#00000000";}
-                ListElement{titlename: "韩文";col: "#00000000";}
-                ListElement{titlename: "俄文";col: "#00000000";}
-                ListElement{titlename: "法文";col: "#00000000";}
-                ListElement{titlename: "葡萄牙文";col: "#00000000";}
-                ListElement{titlename: "西班牙文";col: "#00000000";}
-            }
-            delegate: listcomponent;
-            onCurrentIndexChanged: {
-                //console.log("List:"+listView.currentIndex);
-            }
-            onActiveFocusChanged: {
-                if(!listView.activeFocus){
-                    hide();
-                    console.log("choose transModep2 no focus.")
+                model: ListModel{
+                    ListElement{titlename: "自动检测";col: "#00000000";}
+                    ListElement{titlename: "英文";col: "#00000000";}
+                    ListElement{titlename: "中文";col: "#00000000";}
+                    ListElement{titlename: "日文";col: "#00000000";}
+                    ListElement{titlename: "韩文";col: "#00000000";}
+                    ListElement{titlename: "俄文";col: "#00000000";}
+                    ListElement{titlename: "法文";col: "#00000000";}
+                    ListElement{titlename: "葡萄牙文";col: "#00000000";}
+                    ListElement{titlename: "西班牙文";col: "#00000000";}
                 }
-                else{
-                    console.log("choose transModep2 focus.")
+                delegate: listcomponent;
+                onCurrentIndexChanged: {
+                    //console.log("List:"+listView.currentIndex);
+                }
+                onActiveFocusChanged: {
+                    if(!listView.activeFocus){
+                        hide();
+                        console.log("choose transModep2 no focus.")
+                    }
+                    else{
+                        console.log("choose transModep2 focus.")
+                    }
                 }
             }
         }
+
+
         Component{
             id:listcomponent;
             Rectangle{

@@ -6,6 +6,24 @@ JsonProcessor::JsonProcessor(QObject *parent) : QObject(parent)
 }
 void JsonProcessor::handleJson(const QByteArray bytearray)
 {
+    rWeb="";
+    rQuery="";
+    rTranslation="";
+    rErrorCode="";
+    rDict="";
+    rWebdict="";
+
+    //basic
+    rUsphonetic="";
+    rUkphonetic="";
+    rPhonetic="";
+    rExplains="";
+    rUkSpeech="";
+    rUsSpeech="";
+
+    rSSpeakUrl="";
+    rRSpeakUrl="";
+    rl="";
     QJsonParseError jsonError;
     QJsonDocument doucment = QJsonDocument::fromJson(bytearray, &jsonError);  // 转化为 JSON 文档
     //--------------------处理en-zh
@@ -70,7 +88,7 @@ void JsonProcessor::handleJson(const QByteArray bytearray)
                     {
                         rWeb+=key_value[s];
                         if(s!=nSize-1)
-                            rWeb+="\n";
+                            rWeb+="\n    ";
                     }
                 }
             }
@@ -115,7 +133,7 @@ void JsonProcessor::handleJson(const QByteArray bytearray)
                             rTranslation+=translation;
                             if(i2!=n2Size-1)
                             {
-                                rTranslation+=",";
+                                rTranslation+="\n";
                             }
                             //qDebug() << "translation: " << translation;
                         }
@@ -202,7 +220,7 @@ void JsonProcessor::handleJson(const QByteArray bytearray)
                                     rExplains+=explains;
                                     if(i2!=n3Size-1)
                                     {
-                                        rExplains+="\n";
+                                        rExplains+="\n    ";
                                     }
                                     //qDebug() << "explains: " << explains;
                                 }

@@ -1,7 +1,8 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.2
-import QtQuick.Controls 1.4
+//import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
+
 import QtQuick 2.1
 import QtQuick 2.7
 import "Controls" as MyControls
@@ -115,16 +116,61 @@ Item {
     function textInputAdd(a){
         textInput.text += a;
     }
+    property bool isBusyInrun: false;
     MyHttp{
         id:httpO;
         onContentReady0: {
+            isBusyInrun = false;
             page1Back.showWR();
+            queryText.text = returnrQuery();
+            var Usphonetic = returnrUsphonetic();
+            Usphonetic = "美:" + Usphonetic;
+            var Ukphonetic = returnrUkphonetic();
+            Ukphonetic = "英:" + Ukphonetic;
+            //var Phonetic = returnrPhonetic();
+            //Phonetic = "通用:" + Phonetic;
+            //phonetic.text = Phonetic;
+            //phoneticRec.width = phonetic.contentWidth+20;
+            usphonetic.text = Usphonetic;
+            //usphoneticRec.width = usphonetic.contentWidth+20;
+            ukphonetic.text = Ukphonetic;
+            //ukphoneticRec.width = ukphonetic.contentWidth+20;
+            if(oLanFact != 1 || returnrExplains() == ""){
+                phoneticAndSpeech.height = 0;
+                speak01.visible = false;
+                speak02.visible = false;
+                //speak03.visible = false;
+                //phoneticRec.visible = false;
+                usphoneticRec.visible = false;
+                ukphoneticRec.visible = false;
+
+            }
+            else{
+                phoneticAndSpeech.height = 30;
+                speak01.visible = true;
+                speak02.visible = true;
+                //speak03.visible = true;
+                //phoneticRec.visible = true;
+                usphoneticRec.visible = true;
+                ukphoneticRec.visible = true;
+
+            }
+            explainsText.clear();
+            if(returnrTranslation() != ""){
+                explainsText.text = "释义:\n    " + returnrTranslation();
+            }
+            if(returnrExplains() != "")
+                explainsText.text += ("\n详细释义:\n    " + returnrExplains());
+            websText.clear();
+            if(returnrWeb() != "")
+                websText.text = "相关释义:\n    " + returnrWeb();
         }
     }
     function doHttp(i,a,b){
         if(textInput.length > 0 ){
             httpO.inithttp(i,textInput.text,a,b);
             httpO.get();
+            isBusyInrun = true;
         }
     }
     CJudgeLanguageType{
@@ -169,9 +215,12 @@ Item {
         }
         return b;
     }
-    property int oLan:0;
-    property int tLan:0;
+    //property int oLan:0;
+    //property int tLan:0;
+    property int transType:0;
     property string judgedInputLanType: "";
+    property int oLanFact:0;
+    property int tLanFact:0;
     function judgeLT(a){
         if(a == 0){
             return "auto";
@@ -203,19 +252,19 @@ Item {
     }
     function setShowLanTypeText(){
         if(judgedInputLanType == "zh-CHS"){
-            showLanType.text = "中文";
+            showLanType.text = "自动检测:中文";
         }
         if(judgedInputLanType == "EN"){
-            showLanType.text = "英文";
+            showLanType.text = "自动检测:英文";
         }
         if(judgedInputLanType == "ja"){
-            showLanType.text = "日文";
+            showLanType.text = "自动检测:日文";
         }
         if(judgedInputLanType == "ko"){
-            showLanType.text = "韩文";
+            showLanType.text = "自动检测:韩文";
         }
         if(judgedInputLanType == "ru"){
-            showLanType.text = "俄文";
+            showLanType.text = "自动检测:俄文";
         }
         if(judgedInputLanType == ""){
             showLanType.text = "";
@@ -230,6 +279,82 @@ Item {
     function toM(){
         changeLanbuToM.running = true;
     }
+
+    function judgeTransTypeAuto(){
+        if(transType == 0){
+            if(judgedInputLanType == "zh-CHS"){
+                console.log("qwedsa1");
+                oLanFact = 2;
+                tLanFact = 1;
+            }
+            else if(judgedInputLanType == "EN"){
+                console.log("qwedsa2");
+                oLanFact = 1;
+                tLanFact = 2;
+            }
+            else{
+                console.log("qwedsa3");
+                oLanFact = 0;
+                tLanFact = 2;
+            }
+        }
+        if(transType == 1){
+            if(judgedInputLanType == "zh-CHS"){
+                oLanFact = 2;
+                tLanFact = 1;
+            }
+            else{
+                oLanFact = 1;
+                tLanFact = 2;
+            }
+        }
+        if(transType == 2){
+            if(judgedInputLanType == "zh-CHS"){
+                oLanFact = 2;
+                tLanFact = 3;
+            }
+            else{
+                oLanFact = 3;
+                tLanFact = 2;
+            }
+        }
+        if(transType == 3){
+            if(judgedInputLanType == "zh-CHS"){
+                oLanFact = 2;
+                tLanFact = 4;
+            }
+            else{
+                oLanFact = 4;
+                tLanFact = 2;
+            }
+        }
+        if(transType == 4){
+            if(judgedInputLanType == "zh-CHS"){
+                oLanFact = 2;
+                tLanFact = 5;
+            }
+            else{
+                oLanFact = 5;
+                tLanFact = 2;
+            }
+        }
+    }
+    Rectangle{
+        width: 200;
+        height: 150;
+        anchors.centerIn: parent;
+        visible: isBusyInrun;
+        color: "#99FFFFFF";
+        radius: 10;
+        BusyIndicator{
+            //visible: false;
+            anchors.centerIn: parent;
+            running: isBusyInrun;
+        }
+    }
+
+
+
     Rectangle{
         id:page1Back;
         anchors.fill: parent;
@@ -255,7 +380,7 @@ Item {
                 anchors.rightMargin: 4;
                 id: showLanTypeI
                 height: textBack.height;
-                width: 37;
+                width: 77;
                 Text {
                     //anchors.right: showLanTypeI.right;
                     //anchors.bottom: showLanTypeI.bottom;
@@ -263,8 +388,9 @@ Item {
                     height: 10;
                     id: showLanType
                     text: qsTr("");
-                    font.pixelSize: 14;
+                    font.pixelSize: 10;
                     verticalAlignment: Text.AlignVCenter;
+                    horizontalAlignment: Text.AlignHCenter;
                     Rectangle{
                         id: showLanTypeRec
                         anchors.fill:parent;
@@ -295,7 +421,7 @@ Item {
                     anchors.fill: parent;
                     font.pointSize: 10;
                     verticalAlignment: TextInput.AlignVCenter;
-                    maximumLength: 70;
+                    maximumLength: 30;
                     Rectangle{
                         id:ss01;
                         visible: false;
@@ -356,8 +482,10 @@ Item {
                             //page1Back.showWR();
                         waitChooseList.item.getStringLength(0);
                         textInput.selectAll();
-                        if(textInput.length != 0)
-                            doHttp(true,"EN","zh-CHS");
+                        if(textInput.length != 0){
+                            judgeTransTypeAuto();
+                            doHttp(true,judgeLT(oLanFact),judgeLT(tLanFact));
+                        }
 
                     }
                     onActiveFocusChanged: {
@@ -414,7 +542,7 @@ Item {
                 radius: 15;
                 focus: false;
                 activeFocusOnTab: false;
-                color: "#300099FF";
+                color: "#1000BBFF";
 
                 PropertyAnimation{
                     id:changeLanbuToL;
@@ -547,7 +675,7 @@ Item {
                         textInput.forceActiveFocus();
                         textInput.selectAll();
                         if(textInput.length != 0)
-                            doHttp(true,"EN","zh-CHS");
+                            doHttp(true,judgeLT(oLanFact),judgeLT(tLanFact));
                     }
                 }
             }
@@ -556,18 +684,254 @@ Item {
             id:wordExplainRec;
             height: 0;
             width: 0;
-            //anchors.top: textBack.bottom;
-            //anchors.topMargin: 5;
-            //anchors.left: textBack.left;
+            clip: true;
             x:page1.width * 0.05;
             y:45;
             property bool isShow: false;
-            color: "#AAFFFFFF";
+            color: "#CCFFFFFF";
             radius: 5;
             focus: false;
             activeFocusOnTab: false;
             border.width: 1;
             border.color: "#100099FF";
+            MouseArea{
+                anchors.fill: parent;
+                function ifsure(){
+                    if(scrollItem.height > wordExplainRec.height){
+                        return true;
+                    }
+                    return false;
+                }
+                visible: ifsure();
+                onWheel: {
+                    var datl = wheel.angleDelta.y/120;//一刻滚轮代表正负120度，所以除以120等于1或者-1
+                    if(datl > 0){
+                        if(vbar.position >=0.05)
+                            vbar.position -=0.05;
+                    }
+                    else
+                        if(vbar.position <=0.95)
+                            vbar.position +=0.05;
+                }
+            }
+
+            Item{
+                width: wordExplainRec.width;
+                x:0;
+                y:0;
+                id: scrollItem;
+                Item {
+                    id:queryI;
+                    anchors.left: parent.left;
+                    anchors.top: parent.top;
+                    anchors.leftMargin: 30;
+                    anchors.topMargin: 30;
+                    height: 30;
+                    Rectangle{
+                        anchors.fill: parent;
+                        color: "#00000000";
+                    }
+                    Text {
+                        id: queryText;
+                        text: qsTr("test");
+                        anchors.fill: parent;
+                        font.pixelSize: 30;
+                        verticalAlignment: Text.AlignVCenter;
+                        onTextChanged: {
+                            queryI.height = contentHeight;
+                            queryI.width = contentWidth;
+                        }
+                    }
+                    onHeightChanged: {
+                        scrollItem.height = queryI.height + 60 + phoneticAndSpeech.height + explains.height + webs.height;
+                    }
+
+                }
+                Item{
+                    id: phoneticAndSpeech;
+                    anchors.top: queryI.bottom;
+                    anchors.topMargin: 10;
+                    anchors.left: parent.left;
+                    anchors.leftMargin: 30;
+                    height: 30;
+                    clip: true;
+                    width: parent.width - 60;
+                    onHeightChanged: {
+                        scrollItem.height = queryI.height + 60 + phoneticAndSpeech.height + explains.height + webs.height;
+                    }
+
+                    Rectangle{
+                        visible: true;
+                        id:speak01
+                        width: 30;
+                        height: 30;
+                        anchors.left: parent.left;
+                        anchors.top: parent.top;
+                        color: "#100099FF";
+                    }
+                    Rectangle{
+                        id:usphoneticRec;
+                        height: 30;
+                        anchors.left: speak01.right;
+                        anchors.top: speak01.top;
+                        color: "#10000000";
+                        Text{
+                            visible: true;
+                            anchors.centerIn: parent;
+                            verticalAlignment: Text.AlignVCenter;
+                            id:usphonetic;
+                            text: qsTr("test");
+                            font.pixelSize: 11;
+                            horizontalAlignment: Text.AlignHCenter;
+                            onTextChanged: {
+                                usphoneticRec.width = contentWidth;
+                            }
+                        }
+                    }
+                    Rectangle{
+                        visible: true;
+                        id:speak02
+                        width: 30;
+                        height: 30;
+                        anchors.left: usphoneticRec.right;
+                        anchors.top: parent.top;
+                        anchors.leftMargin: 10;
+                        anchors.topMargin: 0;
+                        color: "#100099FF";
+                    }
+                    Rectangle{
+                        id:ukphoneticRec;
+                        height: 30;
+                        anchors.left: speak02.right;
+                        anchors.top: speak02.top;
+                        color: "#10000000";
+                        Text{
+                            visible: true;
+                            anchors.centerIn: parent;
+                            verticalAlignment: Text.AlignVCenter;
+                            horizontalAlignment: Text.AlignHCenter
+                            id:ukphonetic;
+                            text: qsTr("test");
+                            font.pixelSize: 11;
+                            onTextChanged: {
+                                ukphoneticRec.width = contentWidth;
+                            }
+
+                        }
+                    }
+                    /*Rectangle{
+                        visible: true;
+                        id:speak03
+                        width: 30;
+                        height: 30;
+                        anchors.left: speak01.left;
+                        anchors.top: speak01.bottom;
+                        anchors.leftMargin: 0;
+                        anchors.topMargin: 5;
+                        color: "#100099FF";
+                    }
+                    Rectangle{
+                        id:phoneticRec;
+                        height: 30;
+                        anchors.left: speak03.right;
+                        anchors.top: speak03.top;
+                        color: "#10000000";
+                        Text{
+                            visible: true;
+                            anchors.fill: parent;
+                            verticalAlignment: Text.AlignVCenter;
+                            horizontalAlignment: Text.AlignHCenter
+                            id:phonetic;
+                            text: qsTr("test");
+                            //height: parent.height;
+                            //width: contentWidth;
+                            font.pixelSize: 11;
+                            onTextChanged: {
+                                phoneticRec.width = contentWidth;
+                            }
+
+                        }
+                    }*/
+                }
+                Item {
+                    id: explains;
+                    anchors.left: parent.left;
+                    anchors.topMargin: 10;
+                    anchors.top: phoneticAndSpeech.bottom;
+                    anchors.leftMargin: 30;
+                    width: parent.width - 60;
+                    TextEdit {
+                        Rectangle{
+                            anchors.fill: parent;
+                            color: "#00000000";
+                        }
+                        id: explainsText;
+                        text: qsTr("text");
+                        anchors.fill: parent;
+                        font.pixelSize: 12;
+                        cursorVisible: false;
+                        wrapMode: TextEdit.Wrap;
+                        readOnly: true;
+                        onTextChanged: {
+                            explains.height = contentHeight + 20;
+                        }
+                    }
+                    onHeightChanged: {
+                        scrollItem.height = queryI.height + 60 + phoneticAndSpeech.height + explains.height + webs.height;
+                    }
+                }
+                Item {
+                    id: webs;
+                    anchors.left: parent.left;
+                    anchors.topMargin: 10;
+                    anchors.top: explains.bottom;
+                    anchors.leftMargin: 30;
+                    width: parent.width - 60;
+                    TextEdit {
+                        Rectangle{
+                            anchors.fill: parent;
+                            color: "#00000000";
+                        }
+                        id: websText;
+                        text: qsTr("text");
+                        anchors.fill: parent;
+                        font.pixelSize: 12;
+                        cursorVisible: false;
+                        wrapMode: TextEdit.Wrap;
+                        readOnly: true;
+                        onTextChanged: {
+                            webs.height = contentHeight + 20;
+                            //explains.width = contentWidth;
+                        }
+                    }
+                    onHeightChanged: {
+                        scrollItem.height = queryI.height + 60 + phoneticAndSpeech.height + explains.height + webs.height;
+                    }
+                }
+            }
+            ScrollBar {
+                      id: vbar
+                      hoverEnabled: true
+                      active: hovered || pressed
+                      orientation: Qt.Vertical
+                      size: wordExplainRec.height / scrollItem.height
+                      anchors.top: parent.top
+                      anchors.right: parent.right
+                      anchors.bottom: parent.bottom
+                      onPositionChanged: {
+                          scrollItem.y = -vbar.position * scrollItem.height;
+                      }
+            }
+            ScrollBar {
+                      id: hbar
+                      hoverEnabled: true
+                      active: hovered || pressed
+                      orientation: Qt.Horizontal
+                      size: wordExplainRec.width / scrollItem.width
+                      anchors.left: parent.left
+                      anchors.right: parent.right
+                      anchors.bottom: parent.bottom
+            }
 
         }
         PropertyAnimation{
@@ -629,6 +993,7 @@ Item {
             onSendChoosed:{
                 chooseLTextL.text = a;
                 chooseLTextR.text = b;
+                transType = c;
                 //console.log(chooseLanguageB.text);
             }
         }

@@ -6,10 +6,10 @@ Rectangle{
     height: 0;
     clip: true;
     property bool isShow:false;
-    color: "#AAFFFFFF";
+    color: "#EEFFFFFF";
     //border.width: 1;
     //border.color: "#300000FF";
-    signal sendChoosed(var a,var b);
+    signal sendChoosed(var a,var b,var c);
     radius: 3;
     ListView{
         id:listView;
@@ -104,7 +104,7 @@ Rectangle{
                             hide();
                             toM();
                             //selected();
-                            sendChoosed(deltextL.text,deltextR.text);
+                            sendChoosed(deltextL.text,deltextR.text,index);
                         }
                         onPressed: {/*rec.color = "#100000FF";*/}
                         onReleased: {rec.color = "#00000000";}
