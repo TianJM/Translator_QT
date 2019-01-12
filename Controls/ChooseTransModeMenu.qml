@@ -6,11 +6,14 @@ Rectangle{
     height: 0;
     clip: true;
     property bool isShow:false;
-    color: "#EEFFFFFF";
+    color: "#FFFFFFFF";
     //border.width: 1;
     //border.color: "#300000FF";
     signal sendChoosed(var a,var b,var c);
     radius: 3;
+    FontLoader { id: fixedFont;
+        source: "qrc:/Fonts/ht.ttf";
+    }
     ListView{
         id:listView;
         interactive: false;
@@ -67,6 +70,7 @@ Rectangle{
                         font.pixelSize: 14;
                         verticalAlignment: Text.AlignVCenter;
                         horizontalAlignment: Text.AlignRight;
+                        font.family: fixedFont.name;
                     }
                     Item{
                         id:gloimgI
@@ -93,6 +97,7 @@ Rectangle{
                         font.pixelSize: 14;
                         verticalAlignment: Text.AlignVCenter;
                         horizontalAlignment: Text.AlignLeft;
+                        font.family: fixedFont.name;
                     }
                     color: "#00000000";
                     MouseArea{

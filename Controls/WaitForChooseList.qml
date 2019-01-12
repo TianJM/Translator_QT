@@ -23,6 +23,9 @@ Rectangle{
         }
 
     }
+    FontLoader { id: fixedFont;
+        source: "qrc:/Fonts/ht.ttf";
+    }
     PropertyAnimation{
         id:showA;
         target: listViewRec;

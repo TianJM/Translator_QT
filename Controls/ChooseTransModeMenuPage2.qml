@@ -14,12 +14,15 @@ Rectangle {
     function setCurrentIndex(a){
         listView.currentIndex = a;
     }
+    FontLoader { id: fixedFont;
+        source: "qrc:/Fonts/ht.ttf";
+    }
     PropertyAnimation{
         id:menuShow;
         target: body;
         property: "height";
         to:120;
-        duration: 50;
+        duration: 200;
     }
 
     PropertyAnimation{
@@ -27,7 +30,7 @@ Rectangle {
         target: body;
         property: "height";
         to:0;
-        duration: 50;
+        duration: 200;
     }
     function show(){
         menuShow.running = true;
@@ -119,6 +122,7 @@ Rectangle {
                     text: titlename;
                     color: "black";
                     font.pixelSize: 13;
+                    font.family: fixedFont.name;
                 }
                 color: "#00000000";
                 MouseArea{

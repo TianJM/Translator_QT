@@ -74,7 +74,9 @@ Item {
         to:20;
         duration: 500;
     }
-
+    FontLoader { id: fixedFont;
+        source: "qrc:/Fonts/ht.ttf";
+    }
     function textM2L(){
         textBack.isMini = false;
         textM2LP.running = true;
@@ -346,6 +348,7 @@ Item {
         visible: isBusyInrun;
         color: "#99FFFFFF";
         radius: 10;
+        z:5;
         BusyIndicator{
             //visible: false;
             anchors.centerIn: parent;
@@ -382,6 +385,7 @@ Item {
                 height: textBack.height;
                 width: 77;
                 Text {
+                    font.family: fixedFont.name;
                     //anchors.right: showLanTypeI.right;
                     //anchors.bottom: showLanTypeI.bottom;
                     anchors.centerIn: showLanTypeI;
@@ -402,7 +406,7 @@ Item {
             }
             MouseArea{
                 id:textInputMouseA;
-                width: textBack.width - chooseLanguageB.width - searchB.width - 12 - showLanTypeI.width;
+                width: textBack.width - chooseLanguageB.width - searchB.width - 9 - showLanTypeI.width;
                 height: 30;
                 clip: true;
                 //anchors.left: chooseLanguageB.right;
@@ -412,9 +416,11 @@ Item {
                 cursorShape: Qt.IBeamCursor;
                 focus: false;
                 activeFocusOnTab: false;
+
+
                 TextInput{
                     selectByMouse: true;
-                    selectionColor: "#880000FF";
+                    selectionColor: "#AA0099FF";
                     activeFocusOnTab: true;
                     id:textInput;
                     clip: true;
@@ -422,6 +428,7 @@ Item {
                     font.pointSize: 10;
                     verticalAlignment: TextInput.AlignVCenter;
                     maximumLength: 30;
+                    font.family: fixedFont.name;
                     Rectangle{
                         id:ss01;
                         visible: false;
@@ -445,6 +452,7 @@ Item {
                             anchors.fill: parent;
                             font.pointSize: 8;
                             color: "gray";
+                            font.family: fixedFont.name;
                         }
                         Text {
                             id: noreadytext;
@@ -455,6 +463,7 @@ Item {
                             anchors.fill: parent;
                             font.pointSize: 8;
                             color: "gray";
+                            font.family: fixedFont.name;
                         }
                     }
                     function textInputNofocus(){
@@ -542,7 +551,7 @@ Item {
                 radius: 15;
                 focus: false;
                 activeFocusOnTab: false;
-                color: "#1000BBFF";
+                color: "#10AABBFF";
 
                 PropertyAnimation{
                     id:changeLanbuToL;
@@ -587,7 +596,7 @@ Item {
                         id: gloimgM
                         anchors.fill: parent;
                         anchors.margins: 6;
-                        source: "qrc:/Image/chooseL.png"
+                        source: "qrc:/Image/hj.jpeg"
                     }
                 }
 
@@ -603,6 +612,7 @@ Item {
                     font.pixelSize: 15;
                     verticalAlignment: Text.AlignVCenter;
                     horizontalAlignment: Text.AlignRight;
+                    font.family: fixedFont.name;
                 }
                 Item{
                     visible: false;
@@ -615,7 +625,7 @@ Item {
                         id: gloimg
                         anchors.fill: parent;
                         anchors.margins: 7;
-                        source: "qrc:/Image/lr3.png"
+                        source: "qrc:/Image/hj.jpeg"
                     }
                 }
 
@@ -631,6 +641,7 @@ Item {
                     font.pixelSize: 15;
                     verticalAlignment: Text.AlignVCenter;
                     horizontalAlignment: Text.AlignLeft;
+                    font.family: fixedFont.name;
                 }
                 MouseArea{
 
@@ -741,6 +752,7 @@ Item {
                             queryI.height = contentHeight;
                             queryI.width = contentWidth;
                         }
+                        font.family: fixedFont.name;
                     }
                     onHeightChanged: {
                         scrollItem.height = queryI.height + 60 + phoneticAndSpeech.height + explains.height + webs.height;
@@ -759,6 +771,13 @@ Item {
                     onHeightChanged: {
                         scrollItem.height = queryI.height + 60 + phoneticAndSpeech.height + explains.height + webs.height;
                     }
+                    Rectangle{
+                        visible: false;
+                        anchors.fill: parent;
+                        color: "transparent";
+                        border.width: 1;
+                        border.color: "#08000000";
+                    }
 
                     Rectangle{
                         visible: true;
@@ -767,14 +786,24 @@ Item {
                         height: 30;
                         anchors.left: parent.left;
                         anchors.top: parent.top;
-                        color: "#100099FF";
+                        color: "#000099FF";
+                        Image {
+                            anchors.fill: parent;
+                            id: img01;
+                            source: "qrc:/Image/hj.jpeg"
+                            anchors.margins: 4;
+                        }
+                        MouseArea{
+                            anchors.fill: parent;
+                            cursorShape: Qt.PointingHandCursor;
+                        }
                     }
                     Rectangle{
                         id:usphoneticRec;
                         height: 30;
                         anchors.left: speak01.right;
                         anchors.top: speak01.top;
-                        color: "#10000000";
+                        color: "#00000000";
                         Text{
                             visible: true;
                             anchors.centerIn: parent;
@@ -786,6 +815,7 @@ Item {
                             onTextChanged: {
                                 usphoneticRec.width = contentWidth;
                             }
+                            font.family: fixedFont.name;
                         }
                     }
                     Rectangle{
@@ -797,14 +827,24 @@ Item {
                         anchors.top: parent.top;
                         anchors.leftMargin: 10;
                         anchors.topMargin: 0;
-                        color: "#100099FF";
+                        color: "#000099FF";
+                        Image {
+                            anchors.fill: parent;
+                            id: img02;
+                            source: "qrc:/Image/hj.jpeg"
+                            anchors.margins: 4;
+                        }
+                        MouseArea{
+                            anchors.fill: parent;
+                            cursorShape: Qt.PointingHandCursor;
+                        }
                     }
                     Rectangle{
                         id:ukphoneticRec;
                         height: 30;
                         anchors.left: speak02.right;
                         anchors.top: speak02.top;
-                        color: "#10000000";
+                        color: "#00000000";
                         Text{
                             visible: true;
                             anchors.centerIn: parent;
@@ -816,6 +856,7 @@ Item {
                             onTextChanged: {
                                 ukphoneticRec.width = contentWidth;
                             }
+                            font.family: fixedFont.name;
 
                         }
                     }
@@ -860,21 +901,37 @@ Item {
                     anchors.top: phoneticAndSpeech.bottom;
                     anchors.leftMargin: 30;
                     width: parent.width - 60;
+                    Rectangle{
+                        anchors.fill: parent;
+                        color: "transparent";
+                        border.width: 1;
+                        border.color: "#08000000";
+                    }
+
                     TextEdit {
                         Rectangle{
                             anchors.fill: parent;
                             color: "#00000000";
                         }
+                        selectionColor: "#AA0099FF";
                         id: explainsText;
                         text: qsTr("text");
                         anchors.fill: parent;
                         font.pixelSize: 12;
-                        cursorVisible: false;
+                        //cursorVisible: false;
+                        selectByMouse: true;
                         wrapMode: TextEdit.Wrap;
                         readOnly: true;
                         onTextChanged: {
                             explains.height = contentHeight + 20;
                         }
+                        onActiveFocusChanged: {
+                            if(!activeFocus){
+                                select(0,0);
+                            }
+                        }
+                        font.family: fixedFont.name;
+
                     }
                     onHeightChanged: {
                         scrollItem.height = queryI.height + 60 + phoneticAndSpeech.height + explains.height + webs.height;
@@ -887,22 +944,36 @@ Item {
                     anchors.top: explains.bottom;
                     anchors.leftMargin: 30;
                     width: parent.width - 60;
+                    Rectangle{
+                        anchors.fill: parent;
+                        color: "transparent";
+                        border.width: 1;
+                        border.color: "#08000000";
+                    }
                     TextEdit {
                         Rectangle{
                             anchors.fill: parent;
                             color: "#00000000";
                         }
+                        selectionColor: "#AA0099FF";
                         id: websText;
                         text: qsTr("text");
                         anchors.fill: parent;
                         font.pixelSize: 12;
-                        cursorVisible: false;
+                        //cursorVisible: false;
                         wrapMode: TextEdit.Wrap;
                         readOnly: true;
+                        selectByMouse: true;
                         onTextChanged: {
                             webs.height = contentHeight + 20;
                             //explains.width = contentWidth;
                         }
+                        onActiveFocusChanged: {
+                            if(!activeFocus){
+                                select(0,0);
+                            }
+                        }
+                        font.family: fixedFont.name;
                     }
                     onHeightChanged: {
                         scrollItem.height = queryI.height + 60 + phoneticAndSpeech.height + explains.height + webs.height;

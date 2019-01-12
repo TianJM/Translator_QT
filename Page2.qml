@@ -219,7 +219,9 @@ Item {
             transitionRange.y = (page2back.height - 40)/2 + 40;
         }
     }
-
+    FontLoader { id: fixedFont;
+        source: "qrc:/Fonts/ht.ttf";
+    }
     function changeDisplayWayToVerticalAnimation(a){
         if(a){
             displayIsHorizon = false;
@@ -281,6 +283,7 @@ Item {
     MyHttp{
         id:httpO;
         onContentReady1: {
+            isBusyInrun = false;
             transitionTextEdit.text = httpO.returnrTranslation();
         }
     }
@@ -288,6 +291,7 @@ Item {
         if(originTextEdit.length > 0 ){
             httpO.inithttp(i,originTextEdit.text,a,b);
             httpO.get();
+            isBusyInrun = true;
         }
     }
     CJudgeLanguageType{
@@ -436,6 +440,21 @@ Item {
         else
             showLanTypeRec.anchors.margins = -7;
     }
+    property bool isBusyInrun: false;
+    Rectangle{
+        width: 200;
+        height: 150;
+        anchors.centerIn: parent;
+        visible: isBusyInrun;
+        color: "#99FFFFFF";
+        radius: 10;
+        z:5;
+        BusyIndicator{
+            //visible: false;
+            anchors.centerIn: parent;
+            running: isBusyInrun;
+        }
+    }
     Rectangle{
         anchors.fill: parent;
         //border.width: 3;
@@ -467,6 +486,7 @@ Item {
                 color: "#00FFFFFF";
                 radius: 3;
                 Text {
+                    font.family: fixedFont.name;
                     id: titletextO;
                     text: qsTr("原文");
                     color: "#55000000";
@@ -486,6 +506,7 @@ Item {
                     anchors.topMargin: 6;
                     height: 10;
                     Text {
+                        font.family: fixedFont.name;
                         anchors.left: parent.left;
                         anchors.top: parent.top;
                         height: 10;
@@ -502,10 +523,6 @@ Item {
                         }
                     }
                 }
-
-
-
-
                 Rectangle{
                     //anchors.right: parent.right;
                     //anchors.top: parent.top;
@@ -528,6 +545,7 @@ Item {
                     ScrollView{
                         anchors.fill: parent;
                         TextArea{
+                            font.family: fixedFont.name;
                             id:originTextEdit;
                             //anchors.fill: parent
                             width: parent.width;
@@ -546,6 +564,11 @@ Item {
                             onTextChanged: {
                                 judgeType();
                                 setShowLanTypeText();
+                            }
+                            onActiveFocusChanged: {
+                                if(!activeFocus){
+                                    select(0,0);
+                                }
                             }
                         }
                     }
@@ -605,6 +628,7 @@ Item {
                 color: "#00FFFFFF";
                 radius: 3;
                 Text {
+                    font.family: fixedFont.name;
                     id: titletextT;
                     text: qsTr("译文");
                     color: "#55000000";
@@ -631,6 +655,7 @@ Item {
                     ScrollView{
                         anchors.fill: parent;
                         TextArea{
+                            font.family: fixedFont.name;
                             id:transitionTextEdit;
                             //anchors.fill: parent
                             width: parent.width;
@@ -646,6 +671,11 @@ Item {
                                 if(a>b)
                                     return a;
                                 else return b;
+                            }
+                            onActiveFocusChanged: {
+                                if(!activeFocus){
+                                    select(0,0);
+                                }
                             }
                         }
                     }
@@ -702,6 +732,7 @@ Item {
                         color: "#000077FF";
 
                         Text {
+                            font.family: fixedFont.name;
                            anchors.fill: parent;
                             id: lText;
                             text: qsTr("自动检测");
@@ -763,6 +794,7 @@ Item {
                             horizontalAlignment: Text.AlignHCenter;
                             verticalAlignment: Text.AlignVCenter;
                             font.pixelSize: 13;
+                            font.family: fixedFont.name;
                         }
                         MouseArea{
                             anchors.fill: parent;

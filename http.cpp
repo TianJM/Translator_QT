@@ -3,6 +3,7 @@
 #include <QDebug>
 http::http(QObject *parent)
 {
+  Q_UNUSED(parent);
 
 }
 void http::inithttp(bool isWord,QString Text,QString from,QString to)
@@ -57,10 +58,11 @@ void http::finishedSlot(QNetworkReply *reply) {
                     "rRSpeakUrl:" + rRSpeakUrl + "\n" +
                     "rl:" + rl;
         //qDebug()<< tem;
+        if(this->isWord)
+            emit contentReady0();
+        else
+            emit contentReady1();
     }
-    if(this->isWord)
-        emit contentReady0();
-    else
-        emit contentReady1();
+
     reply->deleteLater();
 }

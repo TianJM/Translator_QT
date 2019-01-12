@@ -51,6 +51,9 @@ Window {
             maxOrnormalButton.iconSource = "qrc:/Image/max.png";
         }
     }
+    FontLoader { id: fixedFont;
+        source: "qrc:/Fonts/ht.ttf";
+    }
     Item{
         id: mainWin;
         anchors.fill: parent;
@@ -64,7 +67,7 @@ Window {
         Keys.onPressed: {
             console.log("mainWin detect " + event.key);
             if(event.key == Qt.Key_Alt){
-                toNextView();
+                //toNextView();
                 event.accepted = true;
             }
             /*if(rightView.currentIndex == 0){
@@ -90,7 +93,7 @@ Window {
             anchors.fill: parent;
             fillMode: Image.PreserveAspectCrop;
             smooth: true;
-            source: "qrc:/Image/yzk01.jpg";
+            source: "qrc:/Image/back.jpg";
             opacity: 0.9;
             focus:false;
             activeFocusOnTab: false;
@@ -130,7 +133,7 @@ Window {
                 id: logoText;
                 width: 80;height: 35;
                 horizontalAlignment: Text.AlignHCenter;
-                text: qsTr("**词典");
+                text: qsTr("山寨词典");
                 color:"#BB000000";
                 //font.bold: true;
                 font.pixelSize: 17;
@@ -143,6 +146,7 @@ Window {
                 anchors.topMargin: 5;
                 focus: false;
                 activeFocusOnTab: false;
+                font.family: fixedFont.name;
             }
             Item{
                 id:winLeftMiddle;
@@ -167,7 +171,7 @@ Window {
                             anchors.left: parent.left;
                             anchors.leftMargin: 20;
                             anchors.top: parent.top;
-                            height: parent.height - 4;
+                            height: parent.height - 2;
                             horizontalAlignment: Text.AlignLeft;
                             verticalAlignment: Text.AlignVCenter;
                             width: 23;
@@ -177,6 +181,7 @@ Window {
                             font.pixelSize: 20;
                             focus: false;
                             activeFocusOnTab: false;
+                            font.family: fixedFont.name;
                         }
                         Text {
                             anchors.left: deltextL.right;
@@ -191,6 +196,7 @@ Window {
                             font.pixelSize: 14;
                             focus: false;
                             activeFocusOnTab: false;
+                            font.family: fixedFont.name;
                         }
                         color: col;
                         MouseArea{
@@ -216,12 +222,12 @@ Window {
                 }      
                 ListModel{
                     id: mymodel0
-                    ListElement{titlenameL: "Ⓐ";titlenameR: " 查词";col: "#00000000";}
-                    ListElement{titlenameL: "✏";titlenameR: " 翻译";col: "#00000000";}
-                    ListElement{titlenameL: "📙";titlenameR: " 单词本";col: "#00000000";}
-                    ListElement{titlenameL: "📚";titlenameR: " 长句本";col: "#00000000";}
-                    ListElement{titlenameL: "🔨";titlenameR: " 设置";col: "#00000000";}
-                    ListElement{titlenameL: "😜";titlenameR: " 关于";col: "#00000000";}
+                    ListElement{titlenameL: "";titlenameR: " 查词";col: "#00000000";}
+                    ListElement{titlenameL: "";titlenameR: " 翻译";col: "#00000000";}
+                    ListElement{titlenameL: "";titlenameR: " 单词本";col: "#00000000";}
+                    ListElement{titlenameL: "";titlenameR: " 长句本";col: "#00000000";}
+                    ListElement{titlenameL: "";titlenameR: " 设置";col: "#00000000";}
+                    ListElement{titlenameL: "";titlenameR: " 关于";col: "#00000000";}
                 }
 
                 ListView{
